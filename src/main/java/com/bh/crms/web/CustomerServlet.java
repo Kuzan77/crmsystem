@@ -19,7 +19,7 @@ import java.util.Date;
  * @author ：mmzs
  * @date ：Created in 2021/1/27 10:33
  */
-@WebServlet(name = "CustomerServlet", urlPatterns = "/customer")
+@WebServlet(name = "CustomerServlet", urlPatterns = "/add")
 public class CustomerServlet extends HttpServlet {
 
     private CustomerService customerService = new CustomerService();

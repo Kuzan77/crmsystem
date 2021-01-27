@@ -57,7 +57,7 @@
   
   <body>
 <h3 align="center">添加客户</h3>
-<form action="<c:url value='/customer'/>" method="post">
+<form action="<c:url value='/add'/>" method="post">
 <table border="0" align="center" width="40%" style="margin-left: 100px;">
 	<tr>
 		<td width="100px">客户名称</td>

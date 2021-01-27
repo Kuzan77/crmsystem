@@ -2,6 +2,10 @@ package com.bh.crms.service;
 
 import com.bh.crms.dao.CustomerDao;
 import com.bh.crms.domain.Customer;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
+
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @author ：mmzs
@@ -17,5 +21,12 @@ public class CustomerService {
      */
     public void addCustomer(Customer c) {
         customerDao.addCustomer(c);
+    }
+
+    /**
+     * 查询所有
+     */
+    public List findAll() {
+        return customerDao.findAll();
     }
 }

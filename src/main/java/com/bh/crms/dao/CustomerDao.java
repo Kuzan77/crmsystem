@@ -3,9 +3,13 @@ package com.bh.crms.dao;
 import com.bh.crms.domain.Customer;
 import com.bh.crms.utils.JdbcUtils;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author ：mmzs
@@ -29,8 +33,24 @@ public class CustomerDao {
         }
     }
 
-    public void selectCustomer() {
+    /**
+     * 查询所有
+     */
+    public List findAll() {
         String sql = "select * from tb_customer";
-
+        List<Customer> list = null;
+        try {
+            list = qr.query(sql, new BeanListHandler<>(Customer.class));
+        } catch (SQLException e) {
+            System.out.println("查询失败!!!");
+        }
+        return list;
     }
+
+    /**
+     * 删除客户(根据cid)
+     */
+//    public void deleteCustomer(String cid) {
+//        String sql = "delete from tb_customer where cid = ?";
+//    }
 }
