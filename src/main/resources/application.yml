@@ -1,0 +1,22 @@
+server:
+  port: 9090
+spring:
+  datasource:
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/northsea?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=FALSE
+
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
+
+
+##页面默认前缀目录
+##spring.mvc.view.prefix=/WEB-INF/jsp/
+#spring.mvc.view.prefix=/
+##页面默认后缀目录
+#spring.mvc.view.suffix=.jsp
+##我的8080端口号被占用，改一下端口号
+#server.port=8094
