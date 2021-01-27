@@ -49,8 +49,9 @@ public class CustomerServlet extends HttpServlet {
             String description = req.getParameter("description");
             Customer customer = new Customer(cid, cname, gender, newbirthday, cellphone, email, description);
 
-            req.setAttribute("msg", "添加用户成功");
             customerService.addCustomer(customer);
+            req.setAttribute("msg", "添加用户成功");
+
             RequestDispatcher dispather=req.getRequestDispatcher("msg.jsp");
             dispather.forward(req, resp);
 
