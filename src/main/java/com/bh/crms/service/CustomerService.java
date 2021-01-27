@@ -29,4 +29,11 @@ public class CustomerService {
     public List findAll() {
         return customerDao.findAll();
     }
+
+    /**
+     * 删除客户(根据cid)
+     */
+    public void deleteCustomer(String cid) {
+        customerDao.deleteCustomer(cid);
+    }
 }

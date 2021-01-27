@@ -1,5 +1,8 @@
 package com.bh.crms.web;
 
+import com.bh.crms.service.CustomerService;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,10 +17,16 @@ import java.io.IOException;
 @WebServlet(name = "deleteServlet", urlPatterns = "/delete")
 public class deleteServlet extends HttpServlet {
 
+    private CustomerService customerService = new CustomerService();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String cid = req.getParameter("cid");
-        System.out.println(cid);
+        customerService.deleteCustomer(cid);
+
+        req.setAttribute("msg", "删除用户成功");
+        RequestDispatcher dispather=req.getRequestDispatcher("msg.jsp");
+        dispather.forward(req, resp);
     }
 
     @Override

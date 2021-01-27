@@ -50,7 +50,14 @@ public class CustomerDao {
     /**
      * 删除客户(根据cid)
      */
-//    public void deleteCustomer(String cid) {
-//        String sql = "delete from tb_customer where cid = ?";
-//    }
+    public void deleteCustomer(String cid) {
+        String sql = "delete from tb_customer where cid = ?";
+        // 实际参数
+        // Object[] parms = {cid};
+        try {
+            qr.update(sql, cid);
+        } catch (SQLException e) {
+            System.out.println("删除失败!!!");
+        }
+    }
 }
