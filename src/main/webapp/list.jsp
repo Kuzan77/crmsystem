@@ -39,7 +39,7 @@
 		<td>${crms.email}</td>
 		<td>${crms.description}</td>
 		<td>
-			<a href="<c:url value='/edit.jsp'/>">编辑</a>
+			<a href="<c:url value='/beforeUpdate?cid=${crms.cid}'/>">编辑</a>
 			<a href="<c:url value='/delete?cid=${crms.cid}'/>">删除</a>
 		</td>
 	</tr>

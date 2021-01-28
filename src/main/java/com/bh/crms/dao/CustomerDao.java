@@ -3,11 +3,13 @@ package com.bh.crms.dao;
 import com.bh.crms.domain.Customer;
 import com.bh.crms.utils.JdbcUtils;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ public class CustomerDao {
      */
     public void addCustomer(Customer c) {
 
-        String sql = "insert into tb_customer values (?,?,?,?,?,?,?)";
+        String sql = "insert into tb_customer(cid, cname, gender, birthday, cellphone, email, description) values (?,?,?,?,?,?,?)";
         Object[] objects = {c.getCid(), c.getCname(), c.getGender(), c.getBirthday(), c.getCellphone(), c.getEmail(), c.getDescription()};
         try {
             qr.update(sql, objects);
@@ -37,7 +39,7 @@ public class CustomerDao {
      * 查询所有
      */
     public List findAll() {
-        String sql = "select * from tb_customer";
+        String sql = "select * from tb_customer where enable = 0";
         List<Customer> list = null;
         try {
             list = qr.query(sql, new BeanListHandler<>(Customer.class));
@@ -49,15 +51,83 @@ public class CustomerDao {
 
     /**
      * 删除客户(根据cid)
+     * 修改enable字段为1
      */
-    public void deleteCustomer(String cid) {
-        String sql = "delete from tb_customer where cid = ?";
+    public int deleteCustomer(String cid) {
+        String sql = "UPDATE tb_customer SET enable = ?  where cid = ?";
+        int n = 0;
         // 实际参数
-        // Object[] parms = {cid};
+         Object[] parms = {1, cid};
         try {
-            qr.update(sql, cid);
+            n = qr.update(sql, parms);
         } catch (SQLException e) {
             System.out.println("删除失败!!!");
         }
+        return n;
+    }
+
+    /**
+     * 根据ID查询客户信息(修改之前)
+     */
+    public Customer findCustomerById(String id) {
+        String sql = "SELECT * FROM tb_customer where cid = ?";
+        Customer customer = null;
+        try {
+            customer = qr.query(sql,  new BeanHandler<Customer>(Customer.class),id);
+        } catch (SQLException e) {
+            System.out.println("执行失败!!!");
+        }
+        return customer;
+    }
+
+    /**
+     * 编辑客户信息
+     */
+    public int editCustomer(Customer c) {
+        String sql = "UPDATE tb_customer SET cname=?, gender=?, birthday=?, cellphone=?, email=?, description=? WHERE cid=?";
+        Object[] params = {c.getCname(), c.getGender(), c.getBirthday(), c.getCellphone(), c.getEmail(), c.getDescription(), c.getCid()};;
+        int result = 0;
+        try {
+            result = qr.update(sql, params);
+        } catch (SQLException se) {
+            System.out.println("执行sql语句失败!!!");
+        }
+        return result;
+    }
+
+    /**
+     * 高级搜索
+     */
+    public List advancedQuery(Customer c) {
+        //定义一个容器存储实际参数
+        List<String> list = new ArrayList<String>();
+
+        String sql = "select * from tb_customer where 1 = 1";
+
+        if (!c.getCname().equals("")) {
+            sql += " and cname like ?";
+            list.add("%"+c.getCname().trim()+"%");
+        }
+        if (!c.getGender().equals("")) {
+            sql += " and gender = ?";
+            list.add(c.getGender().trim());
+        }
+        if (!c.getCellphone().equals("")) {
+            sql += " and cellphone = ?";
+            list.add(c.getCellphone().trim());
+        }
+        if (!c.getEmail().equals("")) {
+            sql += " and email = ?";
+            list.add(c.getEmail().trim());
+        }
+        sql += " and enable = 0";
+        // 存储查询结果
+        List<Customer> customerList = null;
+        try {
+            customerList = qr.query(sql, new BeanListHandler<Customer>(Customer.class), list.toArray());
+        } catch (SQLException throwables) {
+            System.out.println("执行sql语句失败!!!");
+        }
+        return customerList;
     }
 }

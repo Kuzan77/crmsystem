@@ -3,7 +3,6 @@ package com.bh.crms.web;
 import com.bh.crms.domain.Customer;
 import com.bh.crms.service.CustomerService;
 import com.bh.crms.utils.DateUtil;
-import com.bh.crms.utils.UUIDUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,29 +16,23 @@ import java.util.Date;
 
 /**
  * @author ：mmzs
- * @date ：Created in 2021/1/27 10:33
+ * @date ：Created in 2021/1/28 9:30
  */
-@WebServlet(name = "CustomerServlet", urlPatterns = "/add")
-public class CustomerServlet extends HttpServlet {
+@WebServlet(name = "editServlet", urlPatterns = "/edit")
+public class editServlet extends HttpServlet {
 
     private CustomerService customerService = new CustomerService();
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         /**
          * 1.封装对象
-         * 2.添加cid--UUID
-         * 3.调用service方法
-         * 4.把成功信息保存到request域
-         * 5.跳转至msg.jsp页面
+         * 2.调用方法完成修改后的数据添加
+         * 3.保存信息到request域
+         * 4.转发至msg.jsp页面
          */
         try {
-            String cid = UUIDUtil.getContinuouslyUUID();
+            String cid = req.getParameter("cid");
             String cname = req.getParameter("cname");
             String gender = req.getParameter("gender");
             String birthday = req.getParameter("birthday");
@@ -49,29 +42,18 @@ public class CustomerServlet extends HttpServlet {
             String description = req.getParameter("description");
             Customer customer = new Customer(cid, cname, gender, newbirthday, cellphone, email, description);
 
-            customerService.addCustomer(customer);
-            req.setAttribute("msg", "添加用户成功");
-
+            int n = customerService.editCustomer(customer);
+            if (n > 0) {
+                req.setAttribute("msg", "修改用户成功");
+            }else {
+                req.setAttribute("msg", "修改用户失败!");
+            }
             RequestDispatcher dispather=req.getRequestDispatcher("msg.jsp");
             dispather.forward(req, resp);
 
-
         } catch (ParseException e) {
-            System.out.println("转换日期格式失败!!!");
+            System.out.println("日期解析失败!!!");
         }
 
-
-    }
-
-    /**
-     * service会自动检测是post或get提交
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
-     */
-    @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.service(req, resp);
     }
 }
