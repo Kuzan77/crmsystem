@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * 多条件组合查询
  * @author ：mmzs
  * @date ：Created in 2021/1/28 11:54
  */
@@ -29,6 +30,12 @@ public class AdvancedQueryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        /**
+         * 1.获取前台数据, 封装对象(4个属性)
+         * 2.调用方法, 完成查询
+         * 3.保存查询结果到request域(crmsList)
+         * 4.转发至list.jsp页面
+         */
         String cname = req.getParameter("cname");
         String gender = req.getParameter("gender");
         String cellphone = req.getParameter("cellphone");
