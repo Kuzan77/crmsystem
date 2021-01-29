@@ -45,7 +45,9 @@ public class AdvancedQueryServlet extends HttpServlet {
 
         req.setAttribute("crmsList", customerList);
 
-        RequestDispatcher dispather = req.getRequestDispatcher("list.jsp");
-        dispather.forward(req, resp);
+        req.getRequestDispatcher("list.jsp").forward(req, resp);
+
+//        RequestDispatcher dispather = req.getRequestDispatcher("list.jsp");
+//        dispather.forward(req, resp);
     }
 }

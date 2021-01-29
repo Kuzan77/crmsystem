@@ -96,14 +96,22 @@ public class CustomerDao {
     }
 
     /**
-     * 高级搜索
+     * 高级搜索(多条件组合查询)
      */
     public List advancedQuery(Customer c) {
+        /**
+         * 1.拼接sql语句
+         * 2.准备参数
+         * 3.执行sql语句
+         * 4.返回执行结果
+         */
+
         //定义一个容器存储实际参数
         List<String> list = new ArrayList<String>();
 
         String sql = "select * from tb_customer where 1 = 1";
 
+        // 获取并判断条件是否存在
         if (!c.getCname().equals("")) {
             sql += " and cname like ?";
             list.add("%"+c.getCname().trim()+"%");
@@ -125,7 +133,7 @@ public class CustomerDao {
         List<Customer> customerList = null;
         try {
             customerList = qr.query(sql, new BeanListHandler<Customer>(Customer.class), list.toArray());
-        } catch (SQLException throwables) {
+        } catch (SQLException se) {
             System.out.println("执行sql语句失败!!!");
         }
         return customerList;
