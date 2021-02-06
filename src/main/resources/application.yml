@@ -11,12 +11,3 @@ spring:
     view:
       prefix: /
       suffix: .jsp
-
-
-##页面默认前缀目录
-##spring.mvc.view.prefix=/WEB-INF/jsp/
-#spring.mvc.view.prefix=/
-##页面默认后缀目录
-#spring.mvc.view.suffix=.jsp
-##我的8080端口号被占用，改一下端口号
-#server.port=8094

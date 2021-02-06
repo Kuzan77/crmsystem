@@ -15,7 +15,28 @@
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-
+      <script type="text/javascript" src="<c:url value='/jquery/jquery-1.5.1.js'/>"></script>
+      <script>
+          $(function () {
+              $("ul.pagination li.disabled a").click(function () {
+                  return false;
+              });
+          });
+      </script>
+	  <style type="text/css">
+		  .page {
+			  width:  500px;
+			  margin: 0 auto;
+		  }
+		  ul {
+			  display: flex;
+			  width: 500px;
+			  list-style: none;
+		  }
+		  li{
+			  flex: 1;
+		  }
+	  </style>
   </head>
   
   <body>
@@ -45,5 +66,35 @@
 	</tr>
 	</c:forEach>
 </table>
+	<div class="page">
+		<ul class="pagination">
+			<li <c:if test="${!page.hasPreviouse}">class="disabled"</c:if>>
+				<a href="?start=0">
+					<span>首页</span>
+				</a>
+			</li>
+
+			<li <c:if test="${!page.hasPreviouse}">class="disabled"</c:if>>
+				<a href="?start=${page.start-page.count}">
+					<span>上一页</span>
+				</a>
+			</li>
+
+			<c:forEach begin="0" end="${page.totalPage-1}" varStatus="status">
+				<li>
+					<a href="?start=${status.index * page.count}" class="current">${status.count}</a>
+				</li>
+			</c:forEach>
+
+			<li <c:if test="${!page.hasNext}">class="disabled"</c:if>>
+				<a href="?start=${page.start+page.count}">
+					<span>下一页</span>
+				</a>
+			</li>
+			<li>
+				共${page.totalPage}页
+			</li>
+		</ul>
+	</div>
   </body>
 </html>

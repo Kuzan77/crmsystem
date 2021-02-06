@@ -5,7 +5,7 @@ import com.bh.crms.utils.JdbcUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
-import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -47,6 +47,37 @@ public class CustomerDao {
             System.out.println("查询失败!!!");
         }
         return list;
+    }
+
+    /**
+     * 查询所有(分页)
+     */
+    public List findAllPage(int start, int count) {
+        String sql = "select * from tb_customer where enable = 0 limit ?, ?";
+        Object[] params = {start, count};
+        List<Customer> list = null;
+        try {
+            list = qr.query(sql, new BeanListHandler<>(Customer.class), params);
+        } catch (SQLException e) {
+            System.out.println("查询失败!!!");
+        }
+        return list;
+    }
+
+    /**
+     * 计算总行数
+     */
+    public int findtotal(int start, int count) {
+        String sql  ="select count(*) from tb_customer where enable = 0";
+        Object[] params = {start, count};
+        int n = 0;
+        try {
+            Number number = qr.query(sql, new ScalarHandler<>());
+            n = number.intValue();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return n;
     }
 
     /**

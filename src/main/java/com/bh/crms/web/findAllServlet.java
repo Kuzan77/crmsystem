@@ -2,6 +2,7 @@ package com.bh.crms.web;
 
 import com.bh.crms.domain.Customer;
 import com.bh.crms.service.CustomerService;
+import com.bh.crms.utils.PageUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,10 +24,32 @@ public class findAllServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Customer> customerList = customerService.findAll();
+        /**
+         * 原始查询
+         */
+//        List<Customer> customerList = customerService.findAll();
+//        req.setAttribute("crmsList", customerList);
+//        RequestDispatcher dispather = req.getRequestDispatcher("list.jsp");
+//        dispather.forward(req, resp);
 
-        req.setAttribute("crmsList", customerList);
+        /**
+         * 分页查询
+         */
+        // 获取分页参数
+        int start = 0;
+        int count = 5;
 
+        try {
+            start = Integer.parseInt(req.getParameter("start"));
+        } catch (Exception e) {
+
+        }
+
+        int total = customerService.findtotal(start, count);
+        PageUtil page = new PageUtil(start, count, total);
+        List<Customer> clist = customerService.findAllPage(page.getStart(), page.getCount());
+        req.setAttribute("page", page);
+        req.setAttribute("crmsList", clist);
         RequestDispatcher dispather = req.getRequestDispatcher("list.jsp");
         dispather.forward(req, resp);
     }

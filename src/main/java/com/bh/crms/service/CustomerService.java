@@ -58,4 +58,21 @@ public class CustomerService {
     public List advancedQuery(Customer c) {
         return customerDao.advancedQuery(c);
     }
+
+    /**
+     * 查询所有(分页)
+     */
+    public List findAllPage(int start, int count) {
+        return customerDao.findAllPage(start, count);
+    }
+
+    /**
+     * 统计总行数
+     * @param start
+     * @param count
+     * @return
+     */
+    public int findtotal(int start, int count) {
+        return customerDao.findtotal(start, count);
+    }
 }
